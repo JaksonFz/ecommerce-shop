@@ -10,10 +10,10 @@ export function useCategories() {
     });
 }
 
-export function useCategory(id: string) {
+export function useCategory(id?: string) {
     return useQuery<CategoryDTO>({
         queryKey: ['category', id],
-        queryFn: () => CategoryService.getById(id),
-        enabled: !!id //-> or Boolean(id)
+        queryFn: () => CategoryService.get(id!),
+        enabled: !!id
     });
 }
