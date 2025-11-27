@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 
 type ProductCardProps = { product: ProductDTO };
 
-
 export function ProductCard({ product }: ProductCardProps) {
 
     const bucketBaseURL = import.meta.env.VITE_BUCKET_URL;
@@ -18,6 +17,7 @@ export function ProductCard({ product }: ProductCardProps) {
         }
     }, [product])
 
+    console.log(product);
     return (
         <Card className="w-3xs flex justify-center">
             <CardHeader className="py-0 h-[210px] flex items-center justify-center">
@@ -29,14 +29,6 @@ export function ProductCard({ product }: ProductCardProps) {
                 <div className="w-full flex flex-col">
                     <p>
                         <IntlProvider locale="pt-BR">
-                            <FormattedNumber value={product.price * 1.15} style="currency" currency="BRL" />
-                        </IntlProvider>
-                    </p>
-                    <p>
-                        Ou
-                        <IntlProvider locale="pt-BR">
-                            <FormattedNumber value={product.price} style="currency" currency="BRL" />
-                            em 10 vezes de
                             <FormattedNumber value={product.price * 1.15} style="currency" currency="BRL" />
                         </IntlProvider>
                     </p>

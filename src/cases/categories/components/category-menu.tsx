@@ -34,13 +34,6 @@ export function CategoryMenu() {
     }, [categories])
 
     useEffect(() => {
-        if (categories) {
-            setVisibleItems(categories.slice(0, 5))
-            setHiddenItems(categories.slice(5))
-        }
-    }, [categories])
-
-    useEffect(() => {
         console.log("Categorias do Supabase:", categories)
     }, [categories])
 
