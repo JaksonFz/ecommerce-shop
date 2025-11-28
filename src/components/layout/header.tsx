@@ -5,11 +5,14 @@ import { Book } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
+import { useAuth } from "@/cases/auth/hooks/use-auth";
 
 export function Header() {
     const { cart } = useCart();
     const [text, setText] = useState("");
     const navigate = useNavigate();
+    const { user } = useAuth();
+
 
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -18,7 +21,7 @@ export function Header() {
             navigate("/");
             return;
         }
-        navigate(`/search?q=${encodeURIComponent(q)}`);
+        navigate(`/ search ? q = ${encodeURIComponent(q)} `);
     }
 
     return (
@@ -26,12 +29,10 @@ export function Header() {
             <div className="container mx-auto flex items-center justify-between py-4 px-4 gap-4">
                 <div className="flex items-center gap-2">
                     <Book className="text-red-600" />
-                    <h1 className="text-2xl font-bold">
-                        Librarium
-                    </h1>
+                    <h1 className="text-2xl font-bold">Librarium</h1>
                 </div>
 
-                <form onSubmit={handleSubmit} className="flex-1 mx-8">
+                <form onSubmit={handleSubmit} className="mx-4 w-80 flex-shrink-0">
                     <input
                         type="text"
                         value={text}
@@ -51,7 +52,19 @@ export function Header() {
                         )}
                     </Button>
                 </Link>
+
+
+                {!user && (
+                    <Link to="/signin">
+                        <Button variant="default" className="text-white">
+                            Entrar
+                        </Button>
+                    </Link>
+                )}
+
             </div>
         </header>
     );
+
+
 }
