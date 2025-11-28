@@ -23,12 +23,12 @@ export function CartPage() {
             </Breadcrumb>
 
             <div className="py-8">
-                {cart.items.lenght > 0 ? (
+                {cart.items.length > 0 ? (
                     <CartContent />
                 ) : (
                     <CartEmpty />
                 )}
             </div>
         </div>
-    )
+    );
 }

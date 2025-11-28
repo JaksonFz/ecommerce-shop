@@ -15,61 +15,86 @@ type CartContextType = {
     cart: Cart;
     addProduct: (product: ProductDTO, quantity?: number) => void;
     removeProductCart: (productId: string) => void;
-}
+    updateQuantity: (productId: string, quantity: number) => void;
+    cartTotal: number;
+};
 
-export const CartContext = createContext<CartContextType | undefined>(undefined)
+export const CartContext = createContext<CartContextType | undefined>(undefined);
 
-type CartContextProviderProps = { children: ReactNode }
+type CartContextProviderProps = { children: ReactNode };
 
 export function CartContextProvider({ children }: CartContextProviderProps) {
-    const [cart, setCart] = useState<Cart>({ items: [] })
+    const [cart, setCart] = useState<Cart>({ items: [] });
 
     useEffect(() => {
-        const storageCart = localStorage.getItem('cart');
-
+        const storageCart = localStorage.getItem("cart");
         if (storageCart) {
             try {
-                setCart(JSON.parse(storageCart))
+                setCart(JSON.parse(storageCart));
             } catch {
-                setCart({ items: [] })
+                setCart({ items: [] });
             }
         }
-    }, [])
+    }, []);
 
-    useEffect(() => { localStorage.setItem('cart', JSON.stringify(cart)) }, [cart]);
+    useEffect(() => {
+        localStorage.setItem("cart", JSON.stringify(cart));
+    }, [cart]);
 
     function addProduct(product: ProductDTO, quantity: number = 1) {
-
         setCart((prevCart) => {
-            const existingItem = prevCart.items.find((item) => item.product.id === product.id);
+            const item = prevCart.items.find((i) => i.product.id === product.id);
 
-            let updatedItems: CartItem[];
-
-            if (existingItem) {
-                updatedItems = prevCart.items.map((item) =>
-                    item.product.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
-                )
-            } else {
-                updatedItems = [...prevCart.items, { product, quantity }]
-
+            if (item) {
+                return {
+                    items: prevCart.items.map((i) =>
+                        i.product.id === product.id
+                            ? { ...i, quantity: i.quantity + quantity }
+                            : i
+                    ),
+                };
             }
 
-            return { items: updatedItems }
-        })
+            return {
+                items: [...prevCart.items, { product, quantity }],
+            };
+        });
+    }
 
+    function updateQuantity(productId: string, quantity: number) {
+        if (quantity < 1) return;
+
+        setCart((prev) => ({
+            items: prev.items.map((item) =>
+                item.product.id === productId
+                    ? { ...item, quantity }
+                    : item
+            ),
+        }));
     }
 
     function removeProductCart(productId: string) {
-        setCart((prevCart) => (
-            {
-                items: prevCart.items.filter((item) => item.product.id != productId)
-            }
-        ))
+        setCart((prevCart) => ({
+            items: prevCart.items.filter((i) => i.product.id !== productId),
+        }));
     }
 
+    const cartTotal = cart.items.reduce(
+        (sum, item) => sum + item.product.price * item.quantity,
+        0
+    );
+
     return (
-        <CartContext.Provider value={{ cart, addProduct, removeProductCart }}>
+        <CartContext.Provider
+            value={{
+                cart,
+                addProduct,
+                removeProductCart,
+                updateQuantity,
+                cartTotal,
+            }}
+        >
             {children}
         </CartContext.Provider>
-    )
+    );
 }

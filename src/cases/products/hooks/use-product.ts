@@ -2,10 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { ProductService } from "../services/product.service";
 import type { ProductDTO } from "../dtos/product.dto";
 
-export function useProducts(categoryId?: string) {
+export function useProducts(categoryId?: string, search?: string) {
     return useQuery<ProductDTO[]>({
-        queryKey: ['products', categoryId ?? 'all'],
-        queryFn: () => ProductService.list(categoryId)
+        queryKey: ['products', categoryId ?? 'all', search ?? ""],
+        queryFn: () => ProductService.list(categoryId, search)
     });
 }
 

@@ -38,12 +38,9 @@ export function CategoryMenu() {
 
     return (
         <aside className="w-[240px] min-h-screen border-r p-4 flex flex-col bg-white">
-            <h5 className="font-medium text-xl text-gray-900 mb-1">
-                Nossos Produtos
+            <h5 className="font-medium text-xl text-gray-900 mb-8">
+                Nossos Livros
             </h5>
-            <p className="text-sm text-gray-500 mb-4">
-                Novos produtos todos os dias
-            </p>
 
             <div className="flex flex-col gap-2">
                 <Button
