@@ -7,13 +7,20 @@ export function ProductListPage() {
     const [searchParams] = useSearchParams();
     const categoryId = searchParams.get("categoryId") || undefined;
 
-    const { data: products, isLoading } = useProducts(categoryId);
+    const { data: products } = useProducts(categoryId);
 
     return (
-        <section className="flex flex-col ml-[240px]">
-            {/* opcional → adiciona margem para não ficar por baixo do sidebar */}
-
-            <div className="flex flex-wrap mt-8 gap-8">
+        <section className="flex flex-col w-full">
+            <div
+                className="
+                grid 
+                grid-cols-1 
+                sm:grid-cols-2 
+                md:grid-cols-3 
+                xl:grid-cols-4 
+                gap-8
+            "
+            >
                 {products &&
                     products.map((product) => (
                         <Link

@@ -13,10 +13,8 @@ function App() {
       <main className="bg-white">
         <div className="container mx-auto flex gap-6 py-6">
 
-          {/* Sidebar */}
-          <aside className="w-60 hidden md:block">
-            <CategoryMenu />
-          </aside>
+          {/* Sidebar REAL */}
+          <CategoryMenu />
 
           {/* Conteúdo (rotas) */}
           <div className="flex-1">

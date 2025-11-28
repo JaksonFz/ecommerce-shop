@@ -1,4 +1,4 @@
-import { useCart } from "@/cases/cart/hooks/Use-cart";
+import { useCart } from "../cases/cart/hooks/use-cart";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { CartEmpty } from "@/cases/cart/components/cart-empty";
 import { CartContent } from "@/cases/cart/components/cart-content";

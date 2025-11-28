@@ -1,5 +1,5 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { useCart } from "../hooks/Use-cart";
+import { useCart } from "../hooks/use-cart";
 import { Item, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from "@/components/ui/item";
 import { FormattedNumber, FormattedNumberParts, IntlProvider } from "react-intl";
 import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
@@ -19,7 +19,8 @@ export function CartContent() {
             <Card className="w-full mt-8">
                 <CardContent>
                     <ItemGroup className="gap-4">
-                        {cart.item.map((item, index) => (
+                        {cart.items.map((item, index) => (
+
                             <Item key={index} variant={"muted"} role="listitem" asChild>
                                 <div>
                                     <ItemMedia variant="image">

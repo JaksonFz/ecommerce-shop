@@ -9,22 +9,17 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { ChevronDown } from "lucide-react"
-import { useSearchParams } from "react-router-dom"
+import { useSearchParams, useNavigate } from "react-router-dom"
 
 export function CategoryMenu() {
     const { data: categories } = useCategories()
-
     const [visibleItems, setVisibleItems] = useState<CategoryDTO[]>([])
     const [hiddenItems, setHiddenItems] = useState<CategoryDTO[]>([])
+    const [searchParams] = useSearchParams()
 
-    const [searchParams, setSearchParams] = useSearchParams();
-    const categoryId = searchParams.get('categoryId') ?? undefined;
-
+    const categoryId = searchParams.get("categoryId") ?? undefined
     const { data: activeCategory } = useCategory(categoryId!)
-
-    useEffect(() => {
-        console.log("Categorias carregadas:", categories)
-    }, [categories])
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (categories) {
@@ -33,37 +28,38 @@ export function CategoryMenu() {
         }
     }, [categories])
 
-    useEffect(() => {
-        console.log("Categorias do Supabase:", categories)
-    }, [categories])
+    function handleSelect(id?: string) {
+        const params = new URLSearchParams()
 
-    function handleSelect(categoryId?: string) {
-        const newParams = new URLSearchParams(searchParams);
+        if (id) params.set("categoryId", id)
 
-        if (categoryId) {
-            newParams.set("categoryId", categoryId);
-        } else {
-            newParams.delete("categoryId");
-        }
-
-        setSearchParams(newParams);
+        navigate(`/?${params.toString()}`)
     }
 
     return (
-        <aside className="w-[240px] min-h-screen border-r p-4 flex flex-col">
-            <h5 className="font-medium text-xl text-gray-900 mb-1">Nossos Produtos</h5>
-            <p className="text-sm text-gray-500 mb-4">Novos produtos todos os dias</p>
+        <aside className="w-[240px] min-h-screen border-r p-4 flex flex-col bg-white">
+            <h5 className="font-medium text-xl text-gray-900 mb-1">
+                Nossos Produtos
+            </h5>
+            <p className="text-sm text-gray-500 mb-4">
+                Novos produtos todos os dias
+            </p>
 
             <div className="flex flex-col gap-2">
-                <Button variant="outline" className="w-full justify-start">
+                <Button
+                    variant={categoryId ? "outline" : "default"}
+                    className="w-full justify-start"
+                    onClick={() => handleSelect(undefined)}
+                >
                     Todos
                 </Button>
 
                 {visibleItems.map((category) => (
                     <Button
                         key={category.id}
-                        variant="outline"
+                        variant={categoryId === category.id ? "default" : "outline"}
                         className="w-full justify-start"
+                        onClick={() => handleSelect(category.id)}
                     >
                         {category.name}
                     </Button>
@@ -77,9 +73,13 @@ export function CategoryMenu() {
                                 <ChevronDown className="ml-1" size={16} />
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-[200px]">
+
+                        <DropdownMenuContent>
                             {hiddenItems.map((category) => (
-                                <DropdownMenuItem key={category.id}>
+                                <DropdownMenuItem
+                                    key={category.id}
+                                    onClick={() => handleSelect(category.id)}
+                                >
                                     {category.name}
                                 </DropdownMenuItem>
                             ))}
@@ -90,4 +90,3 @@ export function CategoryMenu() {
         </aside>
     )
 }
-
